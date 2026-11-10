@@ -417,7 +417,7 @@ store.addEventListener('status', softRender);
 function parseRoute() {
   const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (p[0] === 'g' && p[1]) return { name: p[2] || 'live', gameId: p[1] };
-  if (['players', 'new', 'season'].includes(p[0])) return { name: p[0] };
+  if (['players', 'new', 'season', 'about'].includes(p[0])) return { name: p[0] };
   return { name: 'home' };
 }
 function presence() {
@@ -459,6 +459,7 @@ function view() {
   if (r.name === 'players') return viewPlayers();
   if (r.name === 'new') return viewNewGame();
   if (r.name === 'season') return viewSeason();
+  if (r.name === 'about') return viewAbout();
   return viewHome();
 }
 
@@ -525,11 +526,74 @@ function viewHome() {
       <button class="btn primary big" data-a="go" data-to="#/new">+ New game</button>
       <button class="btn big" data-a="go" data-to="#/players">Players (${players().length})</button>
       <button class="btn big" data-a="go" data-to="#/season">Season</button>
+      <button class="btn about-btn" data-a="go" data-to="#/about">ⓘ How this app works</button>
     </div>
     <h2>Games</h2>
     ${gs.length ? `<ul class="list">${rows}</ul>` : '<p class="muted">No games yet. Add your players, then start a new game.</p>'}
     <p class="foot muted">${store.remote ? 'Live sync on' : 'Local mode: data is stored on this device only. Add Supabase keys in js/config.js to sync between coaches.'}
       · You're <b>${esc(NAME || 'Coach')}</b> <button class="link" data-a="rename">change</button></p>
+  </main>`;
+}
+
+// ---- about ----
+const ABOUT = [
+  ['Built for the bench', [
+    'Log stats while you watch the game.',
+    'Most actions take one or two taps.',
+    'Nothing to save or confirm. Every tap saves instantly.',
+  ]],
+  ['Simple on purpose', [
+    'This is version 1.',
+    'It tracks one team: ours. No opposition stats.',
+    'No shot charts, game clock or opponent score yet.',
+    'Fewer buttons means faster, more accurate logging.',
+    'New features come once the basics prove themselves in real games.',
+  ]],
+  ['Logging a game', [
+    'Tap a player. They stay selected for the next action.',
+    'Tap made or missed for a three, two or layup.',
+    'After a make, tap who assisted. After a miss, tap who rebounded. Both are optional.',
+    'Free throws: tap Free throws, pick how many, then made or missed for each.',
+    'Fouls, turnovers, steals, blocks and rebounds: one tap.',
+  ]],
+  ['Fixing mistakes', [
+    'Undo steps back through your recent actions, one at a time.',
+    'The Log tab lets you edit or delete any event.',
+    'All stats are worked out from the event list, so a fix updates everything.',
+  ]],
+  ['Several coaches at once', [
+    'Everyone sees the same game, live.',
+    'Names at the top show who else has the game open.',
+    'Agree who logs what. For example, one coach on shots, one on rebounds.',
+    'Undo only removes your own entries.',
+  ]],
+  ['Bad signal?', [
+    'Taps save on your phone first.',
+    'They upload when the connection comes back.',
+    'The badge shows Synced, “to sync”, or Offline.',
+  ]],
+  ['In-game decisions', [
+    'Stats is one tap from Live. Your selected player and quarter stay put.',
+    'Hot hand: whole game, this quarter, or the last 5 minutes of play.',
+    'Tap any column to sort.',
+    'Each player tile shows points and fouls. Fouls turn amber at 4.',
+  ]],
+  ['After the game', [
+    'Summary: box score, shooting by quarter and top performers.',
+    'Export to CSV for spreadsheets.',
+    'Season: totals and averages across every game.',
+  ]],
+  ['Access', [
+    'The team code keeps casual visitors out.',
+    'It is not strong security, so don\u2019t store anything sensitive.',
+  ]],
+];
+
+function viewAbout() {
+  return `${header('How it works')}
+  <main class="pad about">
+    ${ABOUT.map(([h, lines]) => `<section><h2>${h}</h2><ul>${lines.map((l) => `<li>${l}</li>`).join('')}</ul></section>`).join('')}
+    <button class="btn primary big wide" data-a="go" data-to="#/">Got it</button>
   </main>`;
 }
 

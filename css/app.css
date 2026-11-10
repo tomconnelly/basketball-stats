@@ -89,6 +89,15 @@ input:focus, select:focus { outline: 2px solid var(--accent); border-color: tran
 .g-opp { font-weight: 700; font-size: 17px; }
 .g-meta { color: var(--muted); font-size: 14px; }
 .foot { margin-top: 28px; font-size: 13px; }
+.about-btn { grid-column: 1 / -1; background: transparent; color: var(--muted); border: 1px solid var(--line); }
+
+/* about */
+.about { max-width: 640px; }
+.about section { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.about h2 { font-size: 28px; line-height: 1.15; margin: 0 0 10px; color: var(--accent); }
+.about ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.about li { font-size: 18px; line-height: 1.4; }
+.about .btn { margin-top: 24px; }
 
 /* players */
 .form { display: grid; gap: 12px; margin-bottom: 12px; }
